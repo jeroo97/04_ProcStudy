@@ -9,9 +9,7 @@
 
 void AMyPlayerController::Tick(float DeltaTime)
 {
-	FVector HitPosition;
-	//RayCast(HitPosition);
-	UE_LOG(LogTemp, Warning, TEXT("The hit location is: %s"), *HitPosition.ToString());
+
 }
 
 void AMyPlayerController::RayCast(FVector& HitLocation)
