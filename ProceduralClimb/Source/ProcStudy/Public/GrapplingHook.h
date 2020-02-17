@@ -7,7 +7,7 @@
 #include "GrapplingHook.generated.h"
 
 class UPhysicsConstraintComponent;
-class USphereComponent;
+class UStaticMeshComponent;
 
 UCLASS()
 class PROCSTUDY_API AGrapplingHook : public AActor
@@ -32,7 +32,10 @@ private:
 	UPhysicsConstraintComponent* PhyisicsConstraint = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	USphereComponent* Hook = nullptr;
+	UStaticMeshComponent* Hook = nullptr;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	UStaticMeshComponent* ActorAttach = nullptr;
 
 	AActor* ControllingActor = nullptr;
 

@@ -3,7 +3,7 @@
 
 #include "GrapplingHook.h"
 #include "PhysicsEngine/PhysicsConstraintComponent.h"
-#include "Components/SphereComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 
 // Sets default values
@@ -13,9 +13,12 @@ AGrapplingHook::AGrapplingHook()
 	PrimaryActorTick.bCanEverTick = true;
 
 	PhyisicsConstraint = CreateDefaultSubobject<UPhysicsConstraintComponent>(FName("PhysicsConstraint"));
-	Hook = CreateDefaultSubobject<USphereComponent>(FName("Hook"));
+
+	Hook = CreateDefaultSubobject<UStaticMeshComponent>(FName("Hook"));
 	SetRootComponent(Hook);
-	Hook->SetSimulatePhysics(true);
+
+	ActorAttach = CreateDefaultSubobject<UStaticMeshComponent>(FName("ActorAttach"));
+	ActorAttach->SetSimulatePhysics(true);
 
 }
 
@@ -25,24 +28,20 @@ void AGrapplingHook::BeginPlay()
 	Super::BeginPlay();
 	
 	ControllingActor = Cast<AActor>(GetWorld()->GetFirstPlayerController()->GetPawn());
-	Hook->ResetRelativeTransform();
+
+	SetupConstraints();
 }
 
-// Called every framea
+// Called every frame
 void AGrapplingHook::Tick(float DeltaTime)
 
 {
 	Super::Tick(DeltaTime);
 
-	if (!IsValid(ControllingActor))
-		return;
-
-	UE_LOG(LogTemp, Warning, TEXT("i'm beeing controlled by: %s"), *ControllingActor->GetName());
-	SetupConstraints();
 }
 
 void AGrapplingHook::SetupConstraints()
 {
-	PhyisicsConstraint->SetConstrainedComponents(Hook, NAME_None, ControllingActor->FindComponentByClass<UCapsuleComponent>(), NAME_None);
+	PhyisicsConstraint->SetConstrainedComponents(Hook, NAME_None, ActorAttach, NAME_None);
 }
 
